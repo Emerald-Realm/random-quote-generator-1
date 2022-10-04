@@ -1,8 +1,18 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useState } from 'react'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export default function Home(props) {
+  // const quotes = props.quote
+
+  const [quote, setQuotes] = useState(props.quote[0])
+  console.log(quote)
+
+  const newQuote = async () => {
+    setQuotes(props.quote[Math.floor(Math.random()*50)])
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -12,58 +22,37 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        Quote below
+        {/* {quotes.map(quote => */}
+        {
+          <div id="quote-box" key={quote.a}>
+            <p id='text'>{quote.q}</p>
+            <p id='author'>{quote.a}</p>
+            <div>
+              <button onClick={newQuote} id='new-quote'>New quote</button>
+              {/* <a href=`twitter.com/intent/tweet` id="tweet-quote">tweet quote</a> */}
+              <a href={`https://twitter.com/intent/tweet?text=${quote.q}-${quote.a}`}
+               id="tweet-quote" target="_blank">tweet quote</a>
+            </div>
+          </div>
+        }
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
+        <p>developed by praise oyegoke</p>
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const res = await fetch(`https://zenquotes.io/api/quotes`);
+  const quote = await res.json();
+
+  return {
+    props: {
+      quote
+    }
+  }
 }
