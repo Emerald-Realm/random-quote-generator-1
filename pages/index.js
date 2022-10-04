@@ -32,7 +32,7 @@ export default function Home(props) {
               <button onClick={newQuote} id='new-quote'>New quote</button>
               {/* <a href=`twitter.com/intent/tweet` id="tweet-quote">tweet quote</a> */}
               <a href={`https://twitter.com/intent/tweet?text=${quote.q}-${quote.a}`}
-               id="tweet-quote" target="_blank">tweet quote</a>
+               id="tweet-quote" target="_blank" rel="noreferrer">tweet quote</a>
             </div>
           </div>
         }
